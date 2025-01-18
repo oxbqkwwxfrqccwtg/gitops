@@ -1,0 +1,104 @@
+image: 'python:3.9-alpine'
+definitions:
+    caches:
+        tox-test: '.tox/test/'
+        tox-build: '.tox/build/'
+        tox-build-docs: '.tox/build-docs/'
+        tox-publish-docs: '.tox/publish-docs/'
+        venv: '.venv/'
+pipelines:
+    branches:
+        master:
+            - step:
+                name: 'Init'
+                caches:
+                    - 'venv'
+                    - 'pip'
+                script:
+                    - 'python3 -m pip install pipenv'
+                    - 'mkdir -p .venv'
+                    - 'python3 -m pipenv install -d'
+                condition:
+                    changesets:
+                        includePaths:
+                            - "src/**"
+                            - "docs/**"
+            - parallel:
+                - step:
+                    name: 'Test'
+                    caches:
+                        - 'tox-test'
+                        - 'venv'
+                        - 'pip'
+                    script:
+                        - 'python3 -m pip install pipenv'
+                        - 'python3 -m pipenv run python3 -m tox -e test'
+                    artifacts:
+                        - 'test-reports/**'
+                    condition:
+                        changesets:
+                            includePaths:
+                                - "src/**"
+                - step:
+                    name: 'Build'
+                    caches:
+                        - 'tox-build'
+                        - 'venv'
+                        - 'pip'
+                    script:
+                        - 'python3 -m pip install pipenv'
+                        - 'python3 -m pipenv run tox -e build'
+                    artifacts:
+                        - 'build/**'
+                    condition:
+                        changesets:
+                            includePaths:
+                                - "src/**"
+            - step:
+                name: 'Build Docs'
+                caches:
+                    - 'tox-build-docs'
+                    - 'venv'
+                    - 'pip'
+                script:
+                    - 'python3 -m pip install pipenv'
+                    - 'python3 -m pipenv run tox -e build-docs'
+                    -
+                artifacts:
+                    - 'dist/docs/**'
+                    - '*.md'
+                condition:
+                    changesets:
+                        includePaths:
+                            - "src/**"
+                            - "docs/**"
+            - step:
+                name: 'Publish Docs'
+                caches:
+                    - 'tox-publish-docs'
+                    - 'venv'
+                    - 'pip'
+                artifacts:
+                    - '*.md'
+                script:
+                    - 'python3 -m pip install pipenv'
+                    - 'apk update && apk add git openssh-client'
+                    - 'python3 -m pipenv run tox -e publish-docs'
+                condition:
+                    changesets:
+                        includePaths:
+                            - "src/**"
+                            - "docs/**"
+            - step:
+                name: 'Self-Mutate Docs'
+                script:
+                    - 'apk update && apk add git openssh-client'
+                    - 'git add --force *.md'
+                    - 'git commit -m "docs(repository): self-mutation"'
+                    - 'git push'
+                condition:
+                    changesets:
+                        includePaths:
+                            - "docs/ARCHITECTURE.rst"
+                            - "docs/README.rst"
+                            - "docs/CONTRIBUTING.rst"

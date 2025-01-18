@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="file__gglobs.test.sh"
+  tests="4"
+  assertions="4"
+>
+  <testcase
+    classname="file__gglobs.test.sh"
+    name="test_match_wildcard"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglobs.test.sh"
+    name="test_no_match_wildcard"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglobs.test.sh"
+    name="test_match_multi"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglobs.test.sh"
+    name="test_no_match_multi"
+    assertions="1"
+  >
+  </testcase>
+</testsuite>

@@ -1,0 +1,6 @@
+gitops-build
+gitops-test
+gitops-release
+gitops-doc
+gitops-audit
+gitops-clean

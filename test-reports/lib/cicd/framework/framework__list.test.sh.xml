@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="framework__list.test.sh"
+  tests="2"
+  assertions="4"
+>
+  <testcase
+    classname="framework__list.test.sh"
+    name="test_NoPath"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="framework__list.test.sh"
+    name="test_ValidSkeletons"
+    assertions="2"
+  >
+  </testcase>
+</testsuite>

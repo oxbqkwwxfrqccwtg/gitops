@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="file__indir.test.sh"
+  tests="3"
+  assertions="4"
+>
+  <testcase
+    classname="file__indir.test.sh"
+    name="test_InsideBaseDir"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__indir.test.sh"
+    name="test_OutsideBaseDir"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="file__indir.test.sh"
+    name="test_ChildDir"
+    assertions="1"
+  >
+  </testcase>
+</testsuite>

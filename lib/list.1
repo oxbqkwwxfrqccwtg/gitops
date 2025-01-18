@@ -1,0 +1,30 @@
+.TH list__slice 1 "January 2025" "1.0" "User Commands"
+.SH NAME
+list__slice \- Extracts a slice of a list passed as stdin
+.SH SYNOPSIS
+.B list__slice
+[\fB\-s\fP \fISTART_INDEX\fP] [\fB\-e\fP \fIEND_INDEX\fP]
+.SH DESCRIPTION
+.B list__slice
+reads from stdin and extracts a slice of a list based on the provided start and end indices. If END_INDEX is not provided, it slices until the end of the input. The extracted items are printed to stdout.
+.PP
+The options are as follows:
+.TP
+\fB\-s\fP \fISTART_INDEX\fP
+Index to start slicing from (0-based).
+.TP
+\fB\-e\fP \fIEND_INDEX\fP
+Index to stop slicing at (0-based, exclusive). If END_INDEX is greater than the list length, the function will slice up to the end of the array.
+.SH EXAMPLES
+.B
+echo -e "item1\nitem2\nitem3\nitem4" | list__slice -s 1 -e 3
+.PP
+.B
+array_slice -s START_INDEX [-e END_INDEX] < input.txt
+.SH RETURN VALUES
+.TP
+0
+if the function executes successfully.
+.TP
+1
+if an invalid option is provided or an option requires an argument but none is given.

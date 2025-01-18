@@ -1,0 +1,12 @@
+AC_INIT([Your Project Name], [1.0])
+AC_PREREQ([2.69])
+
+GITOPS_DOC="null"
+GITOPS_BUILD="null"
+GITOPS_TEST="null"
+GITOPS_AUDIT="null"
+GITOPS_RELEASE="null"
+GITOPS_VERSION="1.0"
+GITOPS_WORKFLOW="gitflow"
+
+AC_OUTPUT

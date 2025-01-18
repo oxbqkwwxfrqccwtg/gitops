@@ -1,0 +1,24 @@
+{
+    "name": "my-project-name",
+    "version": "1.0.0",
+    "devDependencies": {
+        "@types/benchmark": "^2.1.5",
+        "@types/jest": "^29.5.14",
+        "benchmark": "^2.1.4",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.2.5",
+        "ts-node": "^10.9.2",
+        "typedoc": "^0.27.5",
+        "typescript": "^5.7.2"
+    },
+    "dependencies": {
+    },
+    "scripts": {
+        "test": "jest",
+        "build": "npm run build:production",
+        "build:production": "tsc",
+        "build:debug": "tsc -p tsconfig.debug.json",
+        "build:documentation": "typedoc --entryPoints src/index.ts --html build/documentation",
+        "demo": "npm run demo:production"
+    }
+}

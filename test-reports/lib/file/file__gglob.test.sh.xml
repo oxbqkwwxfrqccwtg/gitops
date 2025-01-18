@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="file__gglob.test.sh"
+  tests="5"
+  assertions="6"
+>
+  <testcase
+    classname="file__gglob.test.sh"
+    name="test_wildcard"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglob.test.sh"
+    name="test_no_match"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglob.test.sh"
+    name="test_match_partial"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglob.test.sh"
+    name="test_match_exact_recursive"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__gglob.test.sh"
+    name="test_match_exact_absolute"
+    assertions="2"
+  >
+  </testcase>
+</testsuite>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="framework__apply.test.sh"
+  tests="4"
+  assertions="12"
+>
+  <testcase
+    classname="framework__apply.test.sh"
+    name="test_no_path"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="framework__apply.test.sh"
+    name="test_Apply"
+    assertions="3"
+  >
+  </testcase>
+  <testcase
+    classname="framework__apply.test.sh"
+    name="test_without_overwrite"
+    assertions="4"
+  >
+  </testcase>
+  <testcase
+    classname="framework__apply.test.sh"
+    name="test_with_overwrite"
+    assertions="4"
+  >
+  </testcase>
+</testsuite>

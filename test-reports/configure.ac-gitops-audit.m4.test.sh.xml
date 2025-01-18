@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="configure.ac-gitops-audit.m4.test.sh"
+  tests="4"
+  assertions="8"
+>
+  <testcase
+    classname="configure.ac-gitops-audit.m4.test.sh"
+    name="test_basic"
+    assertions="3"
+  >
+  </testcase>
+  <testcase
+    classname="configure.ac-gitops-audit.m4.test.sh"
+    name="test_quiet"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="configure.ac-gitops-audit.m4.test.sh"
+    name="test_missing_env_var"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="configure.ac-gitops-audit.m4.test.sh"
+    name="test_programming_error"
+    assertions="2"
+  >
+  </testcase>
+</testsuite>

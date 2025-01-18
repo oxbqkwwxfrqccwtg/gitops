@@ -1,0 +1,19 @@
+[4mmake[24m(1)                      administratrix GitOps                     [4mmake[24m(1)
+
+[1mCOMMAND[0m
+           [1mmake [22m[TARGET]
+
+
+[1mSYNOPSIS[0m
+       Make a target of a GitOps software-development lifecycle
+
+
+[1mDESCRIPTION[0m
+       If no TARGET is specified, the 'all' target will be executed.
+
+
+[1mARGUMENTS[0m
+       [1mTARGET[0m
+
+
+v1.0.1-dev.1                     January 2025                          [4mmake[24m(1)

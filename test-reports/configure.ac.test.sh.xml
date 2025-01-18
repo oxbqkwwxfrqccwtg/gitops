@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="1"
+  name="configure.ac.test.sh"
+  tests="1"
+  assertions="1"
+>
+  <testcase
+    classname="configure.ac.test.sh"
+    name="test_without"
+    assertions="1"
+  >
+    <failure
+      type="shunit.assertFail"
+      message="expected:&lt;0&gt; but was:&lt;2&gt;"
+    />
+  </testcase>
+</testsuite>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="framework__is.test.sh"
+  tests="6"
+  assertions="10"
+>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_NoPath"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_NotADirectory"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_NoConfigureAC"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_NoMakefile"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_Makefile"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="framework__is.test.sh"
+    name="test_MakefileAM"
+    assertions="1"
+  >
+  </testcase>
+</testsuite>

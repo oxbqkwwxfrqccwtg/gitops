@@ -1,0 +1,44 @@
+.TH file__filter 1 "January 2025" "1.0" "User Commands"
+.SH NAME
+file__filter \- Filter a list of file paths. Reads from stdin, writes to stdout
+.SH SYNOPSIS
+.B file__filter
+[\fB\-o\fP pattern] \fBsource_dir\fP \fBdestination_dir\fP \fBpatterns\fP ...
+.SH DESCRIPTION
+.B file__filter
+copies the contents of the source directory to the destination directory, but only overwrites files in the destination if they match any of the provided patterns. The function uses the real paths of the source and destination directories to ensure accurate file operations.
+.PP
+The options are as follows:
+.TP
+\fB\-o\fP \fIpattern\fP
+Patterns to not filter files, regardless of whether they exist at the destination. Also, files not matching this pattern and existing at the destination are filtered.
+.SH ARGUMENTS
+.TP
+\fBsource_dir\fP
+Source directory path.
+.TP
+\fBdestination_dir\fP
+Destination directory path.
+.TP
+\fBpatterns\fP ...
+Patterns to match against for overwriting files.
+.SH EXAMPLES
+.B
+file__filter /path/to/src /path/to/dest -o "*.txt" -o "*.md"
+.SH RETURN VALUES
+.TP
+0
+if the function executes successfully.
+.TP
+1
+if an invalid option is provided or an option requires an argument but none is given.
+.SH FUNCTIONS
+.TP
+file__globs
+Check if a path matches against any glob patterns.
+.TP
+file__glob
+Using POSIX 2008 'path' feature of find.
+.TP
+file__indir
+Check if a path is a child of another path.

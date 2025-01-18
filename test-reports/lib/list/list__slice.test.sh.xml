@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="list__slice.test.sh"
+  tests="6"
+  assertions="6"
+>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testSliceEntireList"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testSliceFromStartIndex"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testSliceUpToEndIndex"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testSliceFromStartToEndIndex"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testStartIndexGreaterThanLength"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="list__slice.test.sh"
+    name="testEndIndexGreaterThanLength"
+    assertions="1"
+  >
+  </testcase>
+</testsuite>

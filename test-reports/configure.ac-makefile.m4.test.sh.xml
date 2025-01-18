@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="configure.ac-makefile.m4.test.sh"
+  tests="2"
+  assertions="2"
+>
+  <testcase
+    classname="configure.ac-makefile.m4.test.sh"
+    name="test_with"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="configure.ac-makefile.m4.test.sh"
+    name="test_without"
+    assertions="1"
+  >
+  </testcase>
+</testsuite>

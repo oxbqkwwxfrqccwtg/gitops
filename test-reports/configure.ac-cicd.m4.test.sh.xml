@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="4"
+  name="configure.ac-cicd.m4.test.sh"
+  tests="4"
+  assertions="4"
+>
+  <testcase
+    classname="configure.ac-cicd.m4.test.sh"
+    name="test_without"
+    assertions="1"
+  >
+    <failure
+      type="shunit.assertFail"
+      message="expected:&lt;0&gt; but was:&lt;1&gt;"
+    />
+  </testcase>
+  <testcase
+    classname="configure.ac-cicd.m4.test.sh"
+    name="test_bitbucket"
+    assertions="1"
+  >
+    <failure
+      type="shunit.assertFail"
+      message="expected:&lt;0&gt; but was:&lt;1&gt;"
+    />
+  </testcase>
+  <testcase
+    classname="configure.ac-cicd.m4.test.sh"
+    name="test_gitlab"
+    assertions="1"
+  >
+    <failure
+      type="shunit.assertFail"
+      message="expected:&lt;0&gt; but was:&lt;1&gt;"
+    />
+  </testcase>
+  <testcase
+    classname="configure.ac-cicd.m4.test.sh"
+    name="test_github"
+    assertions="1"
+  >
+    <failure
+      type="shunit.assertFail"
+      message="expected:&lt;0&gt; but was:&lt;1&gt;"
+    />
+  </testcase>
+</testsuite>

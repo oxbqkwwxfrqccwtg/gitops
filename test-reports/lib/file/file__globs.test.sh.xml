@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="file__globs.test.sh"
+  tests="6"
+  assertions="8"
+>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_match_wildcard"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_no_match_wildcard"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_invalid_base_path"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_invalid_base_path_self_reference"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_match_exact"
+    assertions="1"
+  >
+  </testcase>
+  <testcase
+    classname="file__globs.test.sh"
+    name="test_match_multi"
+    assertions="3"
+  >
+  </testcase>
+</testsuite>

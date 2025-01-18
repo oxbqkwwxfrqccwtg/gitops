@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="0"
+  name="file__filter.test.sh"
+  tests="3"
+  assertions="6"
+>
+  <testcase
+    classname="file__filter.test.sh"
+    name="test_matching_and_not_existing_at_destination"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="file__filter.test.sh"
+    name="test_not_matching_and_not_existing_at_destination"
+    assertions="2"
+  >
+  </testcase>
+  <testcase
+    classname="file__filter.test.sh"
+    name="test_matching_and_existing_at_destination"
+    assertions="2"
+  >
+  </testcase>
+</testsuite>

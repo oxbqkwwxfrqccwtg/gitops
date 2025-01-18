@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  failures="1"
+  name="configure.ac-gitops.m4.test.sh"
+  tests="2"
+  assertions="4"
+>
+  <testcase
+    classname="configure.ac-gitops.m4.test.sh"
+    name="test_with"
+    assertions="2"
+  >
+    <failure
+      type="shunit.assertFail"
+      message=""
+    />
+  </testcase>
+  <testcase
+    classname="configure.ac-gitops.m4.test.sh"
+    name="test_without"
+    assertions="2"
+  >
+  </testcase>
+</testsuite>

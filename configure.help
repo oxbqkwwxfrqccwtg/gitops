@@ -1,0 +1,33 @@
+[4mconfigure[24m(1)                 administratrix GitOps                [4mconfigure[24m(1)
+
+[1mCOMMAND[0m
+           [1mconfigure [22m[OPTIONS]
+
+
+[1mSYNOPSIS[0m
+       Configure a Git repository in the current working directory for GitOps
+
+
+[1mDESCRIPTION[0m
+       TODO
+
+
+[1mOPTIONS[0m
+       [1m[--with-git][0m
+
+       [1m[--with-gitops][0m
+
+       [1m[--with-gitops-env][0m
+
+       [1m[--with-framework[=FRAMEWORK]][0m
+
+       [1m[--with-cicd[=CICDSERVICE]][0m
+
+       [1m[--with-workflow=WORKFLOW]][0m
+
+       [1m[--help] [22mprint a long help message
+
+       [1m[-h] [22mprint a short help message
+
+
+v1.0.1-dev.1                     January 2025                     [4mconfigure[24m(1)
