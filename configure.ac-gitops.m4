@@ -8,13 +8,6 @@ if test -z "$GITOPS_GIT_URL"; then
     ])
 fi
 
-if test -z "$GITOPS_PATH"; then
-    AC_MSG_ERROR([
-        The environment variable 'GITOPS_PATH' is not set. This is a 
-        programming error of the program, contact the program's maintainer.
-    ])
-fi
-
 if test -z "$GITOPS_PROTO_PATH"; then
     AC_MSG_ERROR([
         The environment variable 'GITOPS_PROTO_PATH' is not set. This is a 

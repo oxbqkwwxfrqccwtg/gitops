@@ -2,7 +2,6 @@
 
 **End-To-End Software Development Lifecycle Automation**
 
-- GitOps-principled
 - Modular
 - Decentralized
 - Hyper-Portable
@@ -58,22 +57,11 @@ build environment, you may purchase a license for *administratrix GitOps SDK*.
 
 **Need some information? [Let's have a chat on Signal!](https://signal.me/#p/tiara.93)**
 
-# Getting started
+## Getting started
 
-This will initialize a directory as a GitOps repository for typescript and
-GitLab pipelines, as well as Bitbucket pipelines:
+Add GitOps to your current working directory.
 
 ```sh
-$> mdkir my-project && cd $_
-$> curl <url-to-your-gitops-distribution>/configure | sh \
-    --with-git \
-    --wtih-gitops \
-    --with-framework=typescript \
-    --with-cicd=github-actions \
-    --with-autoconf \
+curl -L gitops.administratrix.ac | sh
 ```
 
-To keep the sources maintainable, development tasks, such as testing, and
-generating documentation are handled through a different repository 
-([gitops-dev](https://bitbucket.org/victorykit/gitops-dev/src/master/)), with 
-this repository as a `src/` submodule.

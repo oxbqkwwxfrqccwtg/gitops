@@ -107,7 +107,7 @@ AC_DEFUN([REVERT], [
 _QUIET=1
 
 # queue of the environment auditor
-GITOPS_ENV_CHECKS=''
+export GITOPS_ENV_CHECKS=''
 
 printf '=== Git ===\n'
 m4_include([configure.ac-git.m4])

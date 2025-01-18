@@ -1659,7 +1659,7 @@ fi
 _QUIET=1
 
 # queue of the environment auditor
-GITOPS_ENV_CHECKS=''
+export GITOPS_ENV_CHECKS=''
 
 printf '=== Git ===\n'
 if test -z "$GITOPS_GIT_URL"; then
@@ -1778,13 +1778,6 @@ printf '=== GitOps ===\n'
 if test -z "$GITOPS_GIT_URL"; then
     as_fn_error $? "
         The environment variable 'GITOPS_GIT_URL' is not set. This is a
-        programming error of the program, contact the program's maintainer.
-    " "$LINENO" 5
-fi
-
-if test -z "$GITOPS_PATH"; then
-    as_fn_error $? "
-        The environment variable 'GITOPS_PATH' is not set. This is a
         programming error of the program, contact the program's maintainer.
     " "$LINENO" 5
 fi
