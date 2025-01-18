@@ -661,6 +661,7 @@ with_git
 with_gitops
 with_framework
 with_cicd
+with_workflow
 with_autoconf
 with_gitops_env
 with_automake
@@ -1998,13 +1999,6 @@ if test -z "$GITOPS_PATH"; then
     " "$LINENO" 5
 fi
 
-if test -z "$GITOPS_ENV_PATH"; then
-    as_fn_error $? "
-        The environment variable 'GITOPS_ENV_PATH' is not set. This is a
-        programming error of the program, contact the program's maintainer.
-    " "$LINENO" 5
-fi
-
 
 # Check whether --with-cicd was given.
 if test ${with_cicd+y}
@@ -2019,6 +2013,8 @@ fi
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking CI/CD environment" >&5
 printf %s "checking CI/CD environment... " >&6; }
 if test -z "$ARG_CICD"; then
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: noto" >&5
+printf "%s\n" "noto" >&6; }
 elif test "$ARG_CICD" '=' 'no'; then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: skipped" >&5
 printf "%s\n" "skipped" >&6; }
@@ -2027,7 +2023,24 @@ else
 printf "%s\n" "$ARG_CICD" >&6; }
 fi
 
+if test "$ARG_CICD" '=' 'yes'; then
+    as_fn_error $? "argument_error
+        \`--with-cicd\` requires a value, like \`--with-cicd=foobar\`
+    " "$LINENO" 5
+fi
+
 if ! test "$ARG_CICD" '=' 'no'; then
+    #bootstrap the workflow flag, should it not have been initialized, so
+    #that we can suppress autoconf warnings for `--with-workflow` being unknown
+    if test -z "$ARG_WORKFLOW"; then
+
+# Check whether --with-workflow was given.
+if test ${with_workflow+y}
+then :
+  withval=$with_workflow; ARG_WORKFLOW=$withval
+fi
+
+    fi
 
     if test -z "$ARG_WORKFLOW"; then
         as_fn_error $? "argument_error
@@ -2035,9 +2048,14 @@ if ! test "$ARG_CICD" '=' 'no'; then
         " "$LINENO" 5
     fi
 
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: applying '$ARG_CICD' CI/CD pipeline for '$ARG_WORKFLOW' workflow..." >&5
-printf "%s\n" "$as_me: applying '$ARG_CICD' CI/CD pipeline for '$ARG_WORKFLOW' workflow..." >&6;}
-    sh $GITOPS_PATH/libexec/cicd/apply.sh "$ARG_CICD" "$ARG_WORKFLOW"
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: applying '$ARG_CICD' CI/CD for '$ARG_WORKFLOW' workflow..." >&5
+printf "%s\n" "$as_me: applying '$ARG_CICD' CI/CD for '$ARG_WORKFLOW' workflow..." >&6;}
+    GITOPS_PATH="$GITOPS_PATH" sh $GITOPS_PATH/libexec/cicd/apply.sh "$ARG_CICD" "$ARG_WORKFLOW"
+    if test $? -ne 0; then
+        as_fn_error $? "runtime_error
+            Oops. Applying CI/CD failed.
+        " "$LINENO" 5
+    fi
 
     #enqueuing environment checks to be picked up by the GitOps environment auditor
     _IFS=$IFS; IFS=$'\n'

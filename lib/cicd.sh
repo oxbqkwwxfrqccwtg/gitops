@@ -104,6 +104,7 @@ cicd__init() {
 }
 
 cicd__is() {
+    _path="$path"
     path=$1
 
     if test -z "$path"; then 
@@ -127,13 +128,22 @@ cicd__is() {
         return 5
     fi
 
+    least_workflow=no
     for workflow in $(find "$path" -path '*' -type d); do
+        test "$workflow" '=' "$path" && continue
         if ! test -f "$workflow/render.sh"; then
             echo "error: not implemented: '$workflow/render.sh' for '$1'" >&2
-            return 3
+            return 6
         fi
+        least_workflow=yes
     done
 
+    if test "$least_workflow" '=' 'no'; then
+        echo "error: not implemented: CI/CD pipeline '$path' implements no workflow" >&2
+        return 7
+    fi
+
+    path="$_path"
     return 0
 }
 
@@ -146,6 +156,7 @@ cicd__list() {
     fi
 
     ls "$path" | while IFS= read -r name; do
+
         full_path="$path/$name"
 
         ! test -d "$full_path" && continue
@@ -172,7 +183,7 @@ cicd__workflows() {
 
     workflows=''
 
-    for cicd in "$(cicd__list "$path")"; do
+    for cicd in $(cicd__list "$path"); do
         for workflow in $(find "$cicd" -type d); do
             test "$workflow" '=' "$cicd" && continue
 
@@ -184,32 +195,20 @@ cicd__workflows() {
 }
 
 cicd__detect() {
-    CI_ENV_LEAST=0
+    path="$1"
 
-    # Check for bitbucket-pipelines.yml
-    if test -f bitbucket-pipelines.yml; then
-        CI_ENV="bitbucket"
-        CI_ENV_LEAST=1
-    fi
+    least=no
+    for cicd in $(cicd__list "$path"); do
+        set +e
+        sh $cicd/detect.sh >/dev/null
+        if test $? -eq 0; then
+            echo "$(basename "$cicd")"
+            least=yes
+        fi
+        set -e
+    done
 
-    # Check for gitlab-ci.yml
-    if test $CI_ENV_LEAST -eq 0; then
-      if test -f gitlab-ci.yml; then
-        CI_ENV="$CI_ENV gitlab"
-        CI_ENV_LEAST=1
-      fi
-    fi
+    test "$least" '=' 'no' && return 1
 
-    # Check for .github directory
-    if test $CI_ENV_LEAST -eq 0; then
-      if test -d .github; then
-        CI_ENV="$CI_ENV github"
-        CI_ENV_LEAST=1
-      fi
-    fi
-    if test $CI_ENV_LEAST -ge 1; then
-        AC_MSG_RESULT([$ARG_CICD])
-    else
-        AC_MSG_RESULT([not found])
-    fi
+    return 0
 }

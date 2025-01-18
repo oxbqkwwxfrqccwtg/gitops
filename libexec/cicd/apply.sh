@@ -8,8 +8,8 @@ fi
 
 LIBDIR="$GITOPS_PATH/lib"
 . "$LIBDIR/cicd.sh"
-PIPELINE_DIR="$GITOPS_PATH/srv/cicd"
-SERVICES=$(cicd__list $PIPELINE_DIR)
+CICD_DIR="$GITOPS_PATH/srv/cicd"
+SERVICES=$(cicd__list $CICD_DIR)
 
 help() {
     cat << EOF
@@ -74,6 +74,5 @@ case $1 in
         cicd__is "$CICD_DIR/$1"
         ;;
 esac
-
 
 cicd__apply "$CICD_DIR/$1"
