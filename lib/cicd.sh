@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
+set -e 
 test -z "$LIBDIR" && { echo "errors: 'LIBDIR' not set" >&2; exit 1; }
 . "$LIBDIR"/file.sh
 
 cicd__apply() {
+
     target_path='.'
     while getopts ":t:" opt; do
       case $opt in
@@ -20,15 +22,21 @@ cicd__apply() {
     fi
 
     cicd_path="$(realpath $1)"
+    workflow_name="$2"
+    workflow_path="$cicd_path/$workflow_name"
+
+    if ! test -d "$workflow_path"; then
+        echo "unknown workflow '$workflow_name' for '$cicd_path'" >&2
+        return 1
+    fi
 
     patch_file_basename='patch-files.txt'
     patch_file="$cicd_path/$patch_file_basename"
 
-    set -e
     cicd__is "$cicd_path"
-    set +e
+    test $? -ne 0 && return 1
 
-    for mapping in $(cicd__vars "$path"); do
+    for mapping in $(cicd__vars "$cicd_path"); do
         name="$(echo $mapping | cut -d ':' -f 1)"
         default="$(echo "$mapping:" | cut -d ':' -f 2)"
 
@@ -47,26 +55,7 @@ cicd__apply() {
         fi
     done
 
-    #files that will be overwritten, if they exist at the destination
-    overwrites=''
-    if test -f "$patch_file"; then
-        for overwrite in $(cat $patch_file); do
-            overwrites="$overwrites -o $overwrite"
-        done
-    fi
-
-    find "$cicd_path" -path '*' -follow -type f | \
-        file__filter $overwrites "$cicd_path" "$target_path" | \
-            while IFS= read -r file; do
-
-                test "$file" '=' "patch-files.txt" && continue
-
-                dest_path="$target_path/$file"
-
-                echo "cp: $dest_path"
-
-                cp "$cicd_path/$file" "$dest_path"
-            done
+    sh $workflow_path/apply.sh "$workflow_path" "$target_path"
 }
 
 cicd__args() {
@@ -131,8 +120,8 @@ cicd__is() {
     least_workflow=no
     for workflow in $(find "$path" -path '*' -type d); do
         test "$workflow" '=' "$path" && continue
-        if ! test -f "$workflow/render.sh"; then
-            echo "error: not implemented: '$workflow/render.sh' for '$1'" >&2
+        if ! test -f "$workflow/apply.sh"; then
+            echo "error: not implemented: '$workflow/apply.sh' for '$1'" >&2
             return 6
         fi
         least_workflow=yes
