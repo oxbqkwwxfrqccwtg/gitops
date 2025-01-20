@@ -14,20 +14,30 @@ yaml__get_nested_mappings() {
 
     section_name="$1"
 
+    #TODO: rewrite the communication between subprocesses and main process
+    signal=$(mktemp); printf "no" > $signal
+
     while IFS= read -r line; do
         lineno=$(expr $lineno '+' 1)
 
-        if test "$in" '!=' 'yes'; then
-            test "$(echo "$line" | sed -E 's|^[ \t]+||' | sed -E 's|[ \t]*$||')" '=' "$section_name:" && in=yes
-            continue
+        section=$(echo "$line" | sed -E 's|[ \t]*$||' | sed 's|:$||')
+        if test "$section" '!=' "$line" && test "$(echo "$section" | sed -E 's|^[ \t]+||')" '=' "$section"; then
+            if test "$section" '=' "$section_name"; then
+                printf "yes" > $signal
+                continue
+            elif test "$(cat $signal)" '=' 'yes'; then
+                break
+            fi
         fi
+
+        test "$(cat "$signal")" '!=' 'yes' && continue
 
         #count the indentation of the first line with at least one
         #non-whitespace character, this is the base indentation level
-        if test -z "$indent" && test "$(echo $line | sed -E 's|^[ \t]+[A-Za-z0-9]||')" '!=' "$line"; then
+        if test -z "$indent" && test "$(echo $line | sed -E 's|^[ \t]+[A-Za-z0-9_-]||')" '!=' "$line"; then
             _IFS=$IFS
             unset IFS
-            for char in "$(echo "$line" | sed -E 's|[A-Za-z0-9].*$||')"; do
+            for char in "$(echo "$line" | sed -E 's|[A-Za-z0-9_-].*$||')"; do
                 tabs="$tabs$char"
                 if ! test "$char" '=' ' '; then
                     softtabs="$softtabs    "
@@ -40,22 +50,36 @@ yaml__get_nested_mappings() {
            indent=yes
         fi
 
-        if test -z "$(echo "$line" | sed -E 's|[\w]+||')"; then
-            echo ""
+        #empty lines
+        if test -z "$(echo "$line" | sed -E 's|[ \t]+||')"; then
+            echo "$line"
             continue
         fi
 
         deindent="$(echo "$line" | sed "s|^$tabs||")"
         test "$deindent" '=' "$line" && deindent="$(echo "$line" | sed "s|^$softtabs||")"
 
-        name="$(echo "$deindent" | sed -E 's|:[\w]*$||')"
+        name="$(echo "$deindent" | sed -E 's|:[ \t]*$||' | cut -d ':' -f '1')"
+
         test "$name" "=" "$(echo "$name" | sed -E 's|^[ \t]*||')"
-        if test $? -eq 0; then
-            echo "$lineno:$name" >&2
+        if test $? -eq 0 && test "$(cat "$signal")" '=' 'yes'; then
+
+            if ! test -z "$out"; then
+                _lineno=$(echo "$out" | cut -d ':' -f 1)
+                _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+                echo "$_lineno:$(expr $lineno '-' '1'):$_name" >&2
+            fi
+            out="$lineno:$name"
         fi
 
         echo "$deindent"
     done
+
+    if ! test -z "$out"; then
+        _lineno=$(echo "$out" | cut -d ':' -f 1)
+        _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+        echo "$_lineno:$(expr $lineno '-' '1'):$_name" >&2
+    fi
 
     return 0
 }
@@ -78,8 +102,19 @@ yaml__get_mapping_keys() {
 
         echo "$line"
 
-        echo "$lineno:$name" >&2
+        if ! test -z "$out"; then
+            _lineno=$(echo "$out" | cut -d ':' -f 1)
+            _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+            echo "$_lineno:$(expr $lineno '-' '1'):$_name" >&2
+        fi
+        out="$lineno:$name"
     done
+
+    if ! test -z "$out"; then
+        _lineno=$(echo "$out" | cut -d ':' -f 1)
+        _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+        echo "$_lineno:$(expr $lineno):$_name" >&2
+    fi
 
     return 0
 }
