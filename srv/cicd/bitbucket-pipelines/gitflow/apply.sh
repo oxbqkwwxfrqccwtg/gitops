@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+set -e
+
 NAME="$(basename "$0")"
 DEFINITION_PATH="$1"
 
@@ -83,10 +85,9 @@ done
 node_pipelines="$(cat $DEFINITION_PATH | yaml__get_nested_mappings 'pipelines' 2>/dev/null)"
 node_branches="$(echo "$node_pipelines" | yaml__get_nested_mappings 'branches' 2>/dev/null)"
 
-
 echo "pipelines:"
 
-pipelines=$(cat "$DEFINITION_PATH" | yaml__get_nested_mappings 'pipelines' 2>&1 >/dev/null)
+pipelines="$(cat "$DEFINITION_PATH" | yaml__get_nested_mappings 'pipelines' 2>&1 >/dev/null)"
 has_branches=no
 for pipeline in $pipelines; do
     start="$(echo $pipeline | cut -d ':' -f 1)"
@@ -102,6 +103,7 @@ for pipeline in $pipelines; do
 done
 
 echo "    branches:"
+
 
 branches="$(cat "$DEFINITION_PATH" | yaml__get_nested_mappings 'pipelines' 2>/dev/null | yaml__get_nested_mappings 'branches' 2>&1 >/dev/null)"
 for branch in $branches; do
@@ -123,9 +125,9 @@ for branch in $branches; do
     echo "$workflow_branch" >&2
 
     if test "$workflow_branch" '!=' 'yes'; then
-        cat "$DEFINITION_PATH" | tail -n +$(expr $lineno '+' $branches_offset)
+        cat $DEFINITION_PATH | tail -n +$(expr $lineno '+' 1) | head -n $(expr $elineno '-' $lineno '+' 2)
     else
-        cat $DEFINITION_PATH | tail -n +$(expr $lineno '+' 2) | head -n 1
+        cat $DEFINITION_PATH | tail -n +$(expr $lineno '+' 1) | head -n 1
 
         steps="$(echo "$ta" | yaml__get_mapping_keys 2>&1 >/dev/null)"
         echo "$steps" | while IFS= read -r step; do
@@ -162,18 +164,20 @@ for branch in $branches; do
                     if test "$gitops_step" '=' 'yes'; then
                         notify "dropping step '$step_name', will be regenerated..."
                     else
-                        step_offset=$(expr $branches_offset '+' $lineno '+' $step_lineno)
+                        step_offset=$(expr $branches_offset '+' $step_lineno '+' 2)
                         #cat "$DEFINITION_PATH" | tail -n +$step_offset | head -n $(expr $step_elineno '-' $step_lineno + 1)
-                        cat $DEFINITION_PATH | tail -n +$(expr $step_offset '+' 2) | head -n $(expr $step_elineno '-' $step_lineno + '1')
+                        cat $DEFINITION_PATH | tail -n +$step_offset | head -n $(expr $step_elineno '-' $step_lineno + '1')
                     fi
                 fi
             done
         done
 
         #get indentation of first step
+        branch_offset=$(echo "$branches" | head -n 1 | cut -d ':' -f 1)
         lineno=$(echo "$steps" | head -n 1 | cut -d ':' -f 1)
 
-        step_offset=$(expr $branches_offset '+' $lineno + 2)
+        step_offset=$(expr $branch_offset '+' $lineno + '1')
+
         indent=$(cat "$DEFINITION_PATH" | tail -n +$step_offset | head -n 1 | sed -E 's|[\-]?[ \t]*[A-Za-z_-]+[ \t]*:[ \t]*$||')
 
         notify "applying GitOps steps for branch pipeline '$name'..."
@@ -181,4 +185,3 @@ for branch in $branches; do
         release_pipeline | sed "s|^|$indent|"
     fi
 done
-

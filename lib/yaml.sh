@@ -15,7 +15,8 @@ yaml__get_nested_mappings() {
     section_name="$1"
 
     #TODO: rewrite the communication between subprocesses and main process
-    signal=$(mktemp); printf "no" > $signal
+    signal=$(mktemp)
+    printf "no" > $signal
 
     while IFS= read -r line; do
         lineno=$(expr $lineno '+' 1)
@@ -25,12 +26,10 @@ yaml__get_nested_mappings() {
             if test "$section" '=' "$section_name"; then
                 printf "yes" > $signal
                 continue
-            elif test "$(cat $signal)" '=' 'yes'; then
+            elif test "$(cat "$signal")" '=' 'yes'; then
                 break
             fi
         fi
-
-        test "$(cat "$signal")" '!=' 'yes' && continue
 
         #count the indentation of the first line with at least one
         #non-whitespace character, this is the base indentation level
@@ -59,20 +58,20 @@ yaml__get_nested_mappings() {
         deindent="$(echo "$line" | sed "s|^$tabs||")"
         test "$deindent" '=' "$line" && deindent="$(echo "$line" | sed "s|^$softtabs||")"
 
+        echo "$deindent"
+
+        test "$(cat "$signal")" '!=' 'yes' && continue
+
         name="$(echo "$deindent" | sed -E 's|:[ \t]*$||' | cut -d ':' -f '1')"
 
-        test "$name" "=" "$(echo "$name" | sed -E 's|^[ \t]*||')"
-        if test $? -eq 0 && test "$(cat "$signal")" '=' 'yes'; then
-
+        if test "$name" "=" "$(echo "$name" | sed -E 's|^[ \t]*||')" && test "$(cat "$signal")" '=' 'yes'; then
             if ! test -z "$out"; then
                 _lineno=$(echo "$out" | cut -d ':' -f 1)
                 _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
-                echo "$_lineno:$(expr $lineno '-' '1'):$_name" >&2
+                echo "$_lineno:$(expr $lineno '-' 1):$_name" >&2
             fi
             out="$lineno:$name"
         fi
-
-        echo "$deindent"
     done
 
     if ! test -z "$out"; then
