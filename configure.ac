@@ -1,9 +1,11 @@
 # configure.ac
 # ===============================
-# Project: GitOps
-# Purpose: Configuration script for building the project
-# Author: Your Name
+# Project: administratrix GitOps
+# Purpose: directory-based configuration of unattended 'GitOps Agent'
+# Author: Tiara Rodney <t.rodney@administratrix.de>
 # ===============================
+#
+#
 
 AC_PREREQ([2.69])
 AC_INIT([administratrix GitOps], [1.0], [gitops@administratrix.de])
@@ -50,7 +52,9 @@ AC_ARG_WITH([porcelain-git],
 # ==============================================================================
 # Macro: check for staged git files
 # ==============================================================================
-# CHECK_GIT_STATUS([ERROR])
+# MY_MSG_ERROR([ERROR])
+# should be called instead of, AC_MGS_ERROR, if an execution failure would leave 
+# the local directory in a broken state
 # --------------------------------------
 AC_DEFUN([MY_MSG_ERROR], [
     REVERT
@@ -58,14 +62,14 @@ AC_DEFUN([MY_MSG_ERROR], [
 ])
 
 AC_DEFUN([ENFORCE_PORCELAIN_GIT], [
-    if test "$ARG_PORCELAIN_GIT" '!=' 'yes'; then
+    test "$ARG_PORCELAIN_GIT" '!=' 'yes' && {
         AC_MSG_ERROR([
 
             refusing to continue without porcelain git.
 
             `--without-porcelain-git`, at this point, is illegal.
         ])
-    fi
+    }
 ])
 
 # REMOVE_ORPHANED(FILE_LIST)
@@ -107,6 +111,7 @@ AC_DEFUN([REVERT], [
 _QUIET=1
 
 # queue of the environment auditor
+#TODO: move the
 export GITOPS_ENV_CHECKS=''
 
 printf '=== Git ===\n'

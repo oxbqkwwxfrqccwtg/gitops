@@ -125,10 +125,13 @@ for branch in $branches; do
     echo "$workflow_branch" >&2
 
     if test "$workflow_branch" '!=' 'yes'; then
-        cat $DEFINITION_PATH | tail -n +$(expr $lineno '+' 1) | head -n $(expr $elineno '-' $lineno '+' 2)
+        cat $DEFINITION_PATH \
+            | tail -n +$(expr $lineno '+' 1) \
+            | head -n $(expr $elineno '-' $lineno '+' 2)
     else
         cat $DEFINITION_PATH | tail -n +$(expr $lineno '+' 1) | head -n 1
 
+        _steps_offset=0
         steps="$(echo "$ta" | yaml__get_mapping_keys 2>&1 >/dev/null)"
         echo "$steps" | while IFS= read -r step; do
             step_lineno="$(echo $step | cut -d ':' -f 1)"
@@ -170,6 +173,9 @@ for branch in $branches; do
                     fi
                 fi
             done
+
+            _step_offset=$(expr $_step_offset '+' 1)
+                echo $step_offset
         done
 
         #get indentation of first step
@@ -177,7 +183,7 @@ for branch in $branches; do
         lineno=$(echo "$steps" | head -n 1 | cut -d ':' -f 1)
 
         step_offset=$(expr $branch_offset '+' $lineno + '1')
-
+ 
         indent=$(cat "$DEFINITION_PATH" | tail -n +$step_offset | head -n 1 | sed -E 's|[\-]?[ \t]*[A-Za-z_-]+[ \t]*:[ \t]*$||')
 
         notify "applying GitOps steps for branch pipeline '$name'..."

@@ -33,6 +33,8 @@ With *administratrix GitOps*, you'll be able to:
                                 hyper-portable automaton to seamlessly automate 
                                 routine GitOps targets
 
+  **Automate Pitfalls**:        Automatically handle versioning, branching,
+
 - **Maintain Consistency**: Ensure that all projects in your domain adhere to 
                             the same standards and workflows, reducing the 
                             chances of errors.
@@ -81,7 +83,6 @@ integration for the Bitbucket Pipelines CI/CD service with a Gitflow workflow.
 ```sh
 .gitops/configure --with-cicd=bitbucket-pipelines --with-workflow=gitflow
 ```
-
 
 In theory, you are now done with the configuration and have an end-to-end
 automation for a SDLC of a Rust application. But think about it, you haven't

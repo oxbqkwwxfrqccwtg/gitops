@@ -119,6 +119,45 @@ yaml__get_mapping_keys() {
 }
 
 
+yaml__get_array_keys() {
+
+    lineno=0
+
+    i=0
+
+    while IFS= read -r line; do
+        lineno=$(expr $lineno '+' 1)
+
+        # drop any line starting with a whitespace character
+        test "$(echo "$line" | sed -E 's|^[ \t]+||')" '!=' "$line" && continue
+
+        name="$(echo "$line" | sed -E 's|:.*$||')"
+
+        #drop any line that is not a (rooted) mapping
+        test "$name" '=' "$line" && continue
+
+        echo "$line"
+
+        if ! test -z "$out"; then
+            _lineno=$(echo "$out" | cut -d ':' -f 1)
+            _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+            echo "$_lineno:$(expr $lineno '-' '1'):$_name" >&2
+        fi
+        out="$lineno:$i"
+
+        i=$(expr $i '+' 1)
+    done
+
+    if ! test -z "$out"; then
+        _lineno=$(echo "$out" | cut -d ':' -f 1)
+        _name="$(echo "$out" | sed -E 's|[0-9]+:||')"
+        echo "$_lineno:$(expr $lineno):$_name" >&2
+    fi
+
+    return 0
+}
+
+
 yaml__get_mapping_value() {
     key="$1"
 
