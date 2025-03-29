@@ -1,5 +1,7 @@
 # Administratrix GitOps
 
+> 🛌 NOTICE: This project is taking a quick nap. If it forgot to set an alarm, check out [its origin](https://tiaracodes-admin@bitbucket.org/administratrix/gitops.git).
+
 **End-To-End Software Development Lifecycle Automation**
 
 - Modular
